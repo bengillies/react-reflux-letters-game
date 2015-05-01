@@ -1,0 +1,52 @@
+html, body {
+  background: lightblue;
+}
+
+.main {
+  margin: 0 4rem;
+  height: 100%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0;
+  height: 7rem;
+  width: 100%;
+  background: white;
+  margin: 0;
+}
+
+.letter {
+  flex: 1;
+  margin: 0.1rem;
+  padding: 0.5rem;
+  background: blue;
+  color: white;
+  text-align: center;
+  font-size: 5rem;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.btn-group button {
+  flex: 1;
+  box-sizing: border-box;
+  background: white;
+  padding: 1rem;
+  border: 0;
+  border-left: 1px solid #DCC;
+}
+
+.btn-group button:first-of-type {
+  border-left: 0;
+}
