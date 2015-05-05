@@ -9,7 +9,7 @@ var MAX_LETTERS = 9;
 var letters = [];
 
 // letter distribution from http://www.thecountdownpage.com/letters.htm
-var consonants = [].concat(
+var BASE_CONSONANTS = [].concat(
   new Array(2).fill('B'),
   new Array(3).fill('C'),
   new Array(6).fill('D'),
@@ -31,14 +31,19 @@ var consonants = [].concat(
   new Array(1).fill('X'),
   new Array(1).fill('Y'),
   new Array(1).fill('Z')
-).join('');
-var vowels = [].concat(
+);
+var BASE_VOWELS = [].concat(
   new Array(15).fill('A'),
   new Array(21).fill('E'),
   new Array(13).fill('I'),
   new Array(13).fill('O'),
   new Array(5).fill('U')
-).join('');
+);
+
+var consonants = Array.from(BASE_CONSONANTS);
+var vowels = Array.from(BASE_VOWELS);
+
+var hidingLetters = false;
 
 var LetterStore = Reflux.createStore({
   listenables: Actions,
@@ -59,13 +64,26 @@ var LetterStore = Reflux.createStore({
     }
   },
 
+  onSetLetter: function(position, letter) {
+    letter = letter.toUpperCase();
+    if (!hidingLetters && letter.length === 1) {
+      letters[position] = letter;
+      this.trigger(letters);
+      return 'omg';
+    }
+  },
+
   onNewGame: function() {
     letters = [];
+    consonants = Array.from(BASE_CONSONANTS);
+    vowels = Array.from(BASE_VOWELS);
+    hidingLetters = false;
     this.trigger(letters);
   },
 
   hideLetters: function(word) {
     if (!word) { return; }
+    hidingLetters = true;
     var lettersWithHoles = [].concat(letters);
     word.split('').forEach(function(letter) {
       var index = lettersWithHoles.indexOf(letter);
@@ -81,9 +99,9 @@ var LetterStore = Reflux.createStore({
     return letters;
   },
 
-  randomCharacter: function(str) {
-    var position = Math.floor(Math.random() * str.length);
-    return str.charAt(position);
+  randomCharacter: function(letterList) {
+    var position = Math.floor(Math.random() * letterList.length);
+    return letterList.splice(position, 1)[0];
   }
 });
 
